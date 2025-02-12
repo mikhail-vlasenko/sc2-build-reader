@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="English">
 <head>
     <title>StarCraft Build Order Readout</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,14 +16,28 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            flex-direction: column;
         }
-        .build-section, .saved-section, .timeline-section, .control-section {
+        .top-section, .timeline-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .timeline-content {
+            min-height: 600px; /* Set a minimum height for the timeline content */
+        }
+        .build-section, .saved-section, .timeline-section {
             background: #fff;
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             flex: 1;
             min-width: 300px;
+        }
+        .control-section {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
         }
         textarea {
             width: 100%;
@@ -48,7 +63,6 @@
         button:hover {
             background: #005fa3;
         }
-        /* Timeline Box Styles */
         .timeline-box {
             padding: 10px;
             margin: 5px 0;
@@ -80,45 +94,40 @@
 <body>
     <h1>StarCraft Build Order Readout</h1>
     <div class="container">
-        <div class="build-section">
-            <h2>Edit Build Order</h2>
-            <form id="run-form" action="/start" method="post">
-                <label for="build_order">Build Order:</label><br>
-                <textarea id="build_order" name="build_order" placeholder="14 0:18 Pylon&#10;15 0:38 Gateway&#10;16 0:47 Assimilator&#10;20 1:24 Nexus&#10;20 1:34 Cybernetics Core&#10;21 1:45 Assimilator&#10;21 1:53 Pylon&#10;22 2:08 Adept (Chrono Boost)"></textarea><br><br>
-                <label for="delay">Delay before start (seconds):</label>
-                <input type="number" id="delay" name="delay" value="1" min="0"><br><br>
-                <button type="submit">Start Build</button>
-            </form>
-        </div>
-        <div class="saved-section">
-            <h2>Saved Builds</h2>
-            <div>
-                <label for="save_name">Build Name:</label>
-                <input type="text" id="save_name" placeholder="Enter build name">
-                <button id="save-build">Save Current Build</button>
+        <div class="top-section">
+            <div class="build-section">
+                <h2>Edit Build Order</h2>
+                <form id="run-form" action="/start" method="post">
+                    <label for="build_order">Build Order:</label><br>
+                    <textarea id="build_order" name="build_order"></textarea><br><br>
+                    <label for="delay">Delay before start (seconds):</label>
+                    <input type="number" id="delay" name="delay" value="1" min="0"><br><br>
+                    <button type="submit">Start Build</button>
+                </form>
             </div>
-            <h3>Load a Build</h3>
-            <ul id="saved-builds">
-                <!-- Saved builds will be loaded here -->
-            </ul>
+            <div class="saved-section">
+                <h2>Saved Builds</h2>
+                <div>
+                    <label for="save_name">Build Name:</label>
+                    <input type="text" id="save_name" placeholder="Enter build name">
+                    <button id="save-build">Save Current Build</button>
+                </div>
+                <h3>Load a Build</h3>
+                <ul id="saved-builds"></ul>
+            </div>
         </div>
         <div class="timeline-section">
-            <h2>Timeline</h2>
-            <div id="past-steps">
-                <!-- Past 3 steps (green) will be shown here -->
+            <div class="timeline-content">
+                <h2>Timeline</h2>
+                <div id="past-steps"></div>
+                <div id="next-step"></div>
+                <div id="future-steps"></div>
+                <div class="control-section">
+                    <button id="pause-btn">Pause</button>
+                    <button id="resume-btn">Resume</button>
+                    <button id="stop-btn">Stop</button>
+                </div>
             </div>
-            <div id="next-step">
-                <!-- Next step (yellow) with countdown will be shown here -->
-            </div>
-            <div id="future-steps">
-                <!-- Next 3 future steps (red) will be shown here -->
-            </div>
-        </div>
-        <div class="control-section">
-            <h2>Controls</h2>
-            <button id="pause-btn">Pause</button>
-            <button id="resume-btn">Resume</button>
-            <button id="stop-btn">Stop</button>
         </div>
     </div>
 
