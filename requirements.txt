@@ -1,0 +1,5 @@
+pyttsx3~=2.98
+uvicorn~=0.34.0
+fastapi~=0.115.8
+Jinja2~=3.1.5
+python-multipart~=0.0.20
