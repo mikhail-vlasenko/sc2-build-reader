@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
-import threading, time, os, json
+import threading, time, os, sys, json
 import pyttsx3
 import uvicorn
 
@@ -74,10 +74,13 @@ def parse_build_order(build_order_text: str):
 
 
 def speak(text: str):
-    """Use pyttsx3 to speak the given text."""
-    engine = pyttsx3.init()
-    engine.say(text)
-    engine.runAndWait()
+    """Speak the given text, using 'say' on macOS and pyttsx3 elsewhere."""
+    if sys.platform == "darwin":  # macOS
+        os.system(f'say "{text}"')
+    else:
+        engine = pyttsx3.init()
+        engine.say(text)
+        engine.runAndWait()
 
 
 def scheduler():
