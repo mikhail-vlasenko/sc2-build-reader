@@ -89,10 +89,27 @@
         li {
             margin: 5px 0;
         }
+
+        /*
+         * Simple styling for the message box used in place of alerts.
+         * It is hidden by default; we display it temporarily when needed.
+         */
+        #message-box {
+            background-color: #e7f4ff;
+            color: #333;
+            border: 1px solid #b1d6f3;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none; /* Hide by default */
+        }
     </style>
 </head>
 <body>
     <h1>StarCraft Build Order Readout</h1>
+    <!-- This is the message box that replaces alerts -->
+    <div id="message-box"></div>
+
     <div class="container">
         <div class="top-section">
             <div class="build-section">
@@ -132,6 +149,20 @@
     </div>
 
     <script>
+        /**
+         * Replaces alert() with a less intrusive display in #message-box.
+         */
+        function showMessage(msg) {
+            const box = document.getElementById('message-box');
+            box.textContent = msg;
+            box.style.display = 'block';
+
+            // Optionally hide the message after a few seconds:
+            setTimeout(() => {
+                box.style.display = 'none';
+            }, 3000);
+        }
+
         async function fetchTimeline() {
             try {
                 const response = await fetch('/timeline');
@@ -201,7 +232,7 @@
             const buildName = document.getElementById('save_name').value.trim();
             const buildOrder = document.getElementById('build_order').value;
             if (!buildName) {
-                alert("Please enter a build name to save.");
+                showMessage("Please enter a build name to save.");
                 return;
             }
             const formData = new FormData();
@@ -213,7 +244,7 @@
                     body: formData
                 });
                 const data = await response.json();
-                alert(data.message);
+                showMessage(data.message);
                 loadSavedBuilds();
             } catch (error) {
                 console.error('Error saving build:', error);
@@ -225,7 +256,7 @@
             try {
                 const response = await fetch('/pause', { method: 'POST' });
                 const data = await response.json();
-                alert(data.message);
+                showMessage(data.message);
             } catch (error) {
                 console.error('Error pausing:', error);
             }
@@ -235,7 +266,7 @@
             try {
                 const response = await fetch('/resume', { method: 'POST' });
                 const data = await response.json();
-                alert(data.message);
+                showMessage(data.message);
             } catch (error) {
                 console.error('Error resuming:', error);
             }
@@ -245,7 +276,7 @@
             try {
                 const response = await fetch('/stop', { method: 'POST' });
                 const data = await response.json();
-                alert(data.message);
+                showMessage(data.message);
             } catch (error) {
                 console.error('Error stopping:', error);
             }
